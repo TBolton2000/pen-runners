@@ -7,7 +7,7 @@ import useSwr from "swr";
 
 const fetcher = (...args) => fetch(...args).then(response => response.json());
 
-class ClickableMap extends React.Component {
+class DrawableMap extends React.Component {
     constructor() {
         super()
         this.state = {
@@ -94,7 +94,14 @@ function App() {
 
     // [30.621830, -96.341600] Texas A&M
     return (
-        <ClickableMap startingLoc={currentLocation}/>
+        <div className="side-by-side">
+            <div className="menu">
+                <p>
+                    Add Control Menu Here, you can also use this div as a testing area for other HTML elements that you want to test
+                </p>
+            </div>
+            <DrawableMap startingLoc={currentLocation}/>
+        </div>
     );
 }
 
