@@ -1,3 +1,5 @@
+import withRoot from './components/landingPage/withRoot';
+
 import React from 'react';
 import logo from './logo.svg';
 import { Map, Marker, Popup, TileLayer, Polyline } from "react-leaflet";
@@ -109,4 +111,4 @@ function App() {
     );
 }
 
-export default App;
+export default withRoot(App);
