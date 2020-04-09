@@ -5,6 +5,8 @@ import { Icon,locate,polyline } from "leaflet";
 import './App.css';
 import useSwr from "swr";
 
+import AppAppBar from './components/landingPage/views/AppAppBar';
+
 const fetcher = (...args) => fetch(...args).then(response => response.json());
 
 class DrawableMap extends React.Component {
@@ -94,8 +96,10 @@ function App() {
 
     // [30.621830, -96.341600] Texas A&M
     return (
+        
         <div className="side-by-side">
-            <div className="menu">
+            <AppAppBar />
+            <div className="menu" id="menu">
                 <p>
                     Add Control Menu Here, you can also use this div as a testing area for other HTML elements that you want to test
                 </p>

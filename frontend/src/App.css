@@ -27,6 +27,9 @@
 .App-link {
   color: #61dafb;
 }
+.menu{
+  margin-top : 50px;
+}
 
 @keyframes App-logo-spin {
   from {

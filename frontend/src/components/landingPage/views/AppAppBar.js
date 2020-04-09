@@ -57,9 +57,9 @@ function AppAppBar(props) {
               variant="h6"
               underline="none"
               className={classes.rightLink}
-              href="./App"
+              href="./"
             >
-              {'Sign In'}
+              {'Sign in'}
             </Link>
           </div>
         </Toolbar>
