@@ -1,19 +1,21 @@
 import withRoot from './components/landingPage/withRoot';
-
-import React from 'react';
-import logo from './logo.svg';
+import firebase from "firebase";
+import { Button } from "@material-ui/core";
+import React, {Component} from 'react';
 import { Map, Marker, Popup, TileLayer, Polyline } from "react-leaflet";
 import { Icon,locate,polyline } from "leaflet";
 import './App.css';
 import useSwr from "swr";
 
 import AppAppBar from './components/landingPage/views/AppAppBar';
+import { Redirect } from 'react-router-dom';
+import Landing from './Landing';
 
 const fetcher = (...args) => fetch(...args).then(response => response.json());
 
-class DrawableMap extends React.Component {
-    constructor() {
-        super()
+class DrawableMap extends Component {
+    constructor(props) {
+        super(props)
         this.state = {
             lat: 30.621830,
             lng: -96.341600,
@@ -93,21 +95,28 @@ function App() {
         lng: pos.coords.longitude
         });
     });
+    
+    
 
     
 
     // [30.621830, -96.341600] Texas A&M
     return (
-        
-        <div className="side-by-side">
-            <AppAppBar />
+        <div>
+        {firebase.auth().currentUser === null ? 
+                <Redirect to="/signin" />
+            :
+            <div className="side-by-side">
+            <AppAppBar currentUser={firebase.auth().currentUser}/>
             <div className="menu" id="menu">
-                <p>
-                    Add Control Menu Here, you can also use this div as a testing area for other HTML elements that you want to test
-                </p>
+                <h1>Welcome to Pen-Runners, {firebase.auth().currentUser.displayName}</h1>
+                <img alt="profileImage" src={firebase.auth().currentUser.photoURL} width="250px"/>
             </div>
-            <DrawableMap startingLoc={currentLocation}/>
+                <DrawableMap startingLoc={currentLocation}/>
+            </div>
+        }
         </div>
+        
     );
 }
 

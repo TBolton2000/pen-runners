@@ -1,6 +1,8 @@
 import React from 'react';
+import firebase from "firebase";
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
+import { Button } from "@material-ui/core";
 import Link from '@material-ui/core/Link';
 import AppBar from '../components/AppBar';
 import Toolbar, { styles as toolbarStyles } from '../components/Toolbar';
@@ -47,20 +49,20 @@ function AppAppBar(props) {
             underline="none"
             color="inherit"
             className={classes.title}
-            href="/PenRunners/"
+            href="/"
           >
             {'Pen Runners'}
           </Link>
           <div className={classes.right}>
-            <Link
-              color="inherit"
-              variant="h6"
-              underline="none"
-              className={classes.rightLink}
-              href="./"
-            >
-              {'Sign in'}
-            </Link>
+          {firebase.auth().currentUser === null ? 
+            window.location.pathname === "/signin" ?
+              <Button color="primary" />
+              :
+              <Button variant="outlined" color="secondary" href="/signin">Sign in</Button>
+            : 
+            <Button color="secondary" onClick={()=> firebase.auth().signOut()}>Sign Out</Button>
+          }
+            
           </div>
         </Toolbar>
       </AppBar>
