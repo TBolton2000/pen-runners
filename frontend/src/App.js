@@ -8,11 +8,11 @@ import './App.css';
 import useSwr from "swr";
 
 import DrawableMap from './components/mainPage/components/DrawableMap';
+import MainPage from './components/mainPage/components/MainPage';
 import AppAppBar from './components/landingPage/views/AppAppBar';
 import { Redirect } from 'react-router-dom';
 import Landing from './Landing';
 
-const fetcher = (...args) => fetch(...args).then(response => response.json());
 
 // class DrawableMap extends Component {
 //     constructor(props) {
@@ -81,23 +81,42 @@ const fetcher = (...args) => fetch(...args).then(response => response.json());
 // }
 
 function App() {
-    // const url ="";
-    // const { data, error } = useSwr(url, { fetcher });
-    // console.log(data);
-    var tamu_crd = {
-        lat: 30.621830,
-        lng: -96.341600
+    var drawing = {
+        name: "Drawing 1",
+        selectedSegementIndex: 0,
+        segments: [
+            {
+                name: "Line 1",
+                color: "maroon",
+                points: [[30.6217,-96.3416],[30.6219,-96.3416],[30.6219,-96.3413]]
+            },
+        ],
+        returnDrawing: function() {
+            return this.segments;
+        },
+        returnLastPoint: function(i) {
+            return this.segments[i].points[this.segments[i].points.length-1];
+        },
+        addToSegment: function(i,point) {
+            console.log("Adding to segment");
+            this.segments[i].points.push(point);
+            console.log(this.segments[i].points);
+        },
+        undoFromSegment: function(i) {
+            this.segments[i].points.pop();
+        },
+        addSegment: function(_name,_color,_points) {
+            this.segments.push({
+                name: _name,
+                color: _color,
+                points: []
+            });
+        },
+        removeSegment: function(i) {
+            this.segments.pop();
+        }
     }
-    const [currentLocation, setCurrentLocation] = React.useState(tamu_crd);
-    const [currentDrawing, setCurrentDrawing] = React.useState([]);
-    navigator.geolocation.getCurrentPosition((pos)=>{
-        setCurrentLocation({
-        lat: pos.coords.latitude,
-        lng: pos.coords.longitude
-        });
-    });
-    
-    
+
 
     
 
@@ -107,13 +126,16 @@ function App() {
         {firebase.auth().currentUser === null ? 
                 <Redirect to="/signin" />
             :
-            <div className="side-by-side">
-            <AppAppBar currentUser={firebase.auth().currentUser}/>
-            <div className="menu" id="menu">
-                <h1>Welcome to Pen-Runners, {firebase.auth().currentUser.displayName}</h1>
-                <img alt="profileImage" src={firebase.auth().currentUser.photoURL} width="250px"/>
-            </div>
-                <DrawableMap startingLoc={currentLocation}/>
+            <div>
+                {/* <AppAppBar currentUser={firebase.auth().currentUser}/> <!-- THIS IS A DUPLICATE WHEN RENDERING FROM LOGIN -->*/}
+                <MainPage />
+                {/* <div className="menu" id="menu">
+                    {/* <h1>Welcome to Pen-Runners, {firebase.auth().currentUser.displayName}</h1>
+                    <img alt="profileImage" src={firebase.auth().currentUser.photoURL} width="250px"/>
+                    <button onClick={console.log(drawing)}>Click me!</button> *}
+                    <MainPage/>
+                </div>
+                <DrawableMap startingLoc={[30.6217,-96.3416]} drawing={drawing}/> */}
             </div>
         }
         </div>

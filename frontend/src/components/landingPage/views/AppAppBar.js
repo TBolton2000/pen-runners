@@ -2,9 +2,10 @@ import React from 'react';
 import firebase from "firebase";
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import { Button } from "@material-ui/core";
+import { Button, Avatar, IconButton } from "@material-ui/core";
 import Link from '@material-ui/core/Link';
 import AppBar from '../components/AppBar';
+import MenuIcon from "@material-ui/icons/Menu";
 import Toolbar, { styles as toolbarStyles } from '../components/Toolbar';
 
 const styles = (theme) => ({
@@ -38,12 +39,15 @@ const styles = (theme) => ({
 
 function AppAppBar(props) {
   const { classes } = props;
-
   return (
     <div>
       <AppBar position="fixed">
         <Toolbar className={classes.toolbar}>
-          <div className={classes.left} />
+          <div className={classes.left} >
+          <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
+            <MenuIcon />
+          </IconButton>
+          </div>
           <Link
             variant="h6"
             underline="none"
@@ -60,7 +64,10 @@ function AppAppBar(props) {
               :
               <Button variant="outlined" color="secondary" href="/signin">Sign in</Button>
             : 
-            <Button color="secondary" onClick={()=> firebase.auth().signOut()}>Sign Out</Button>
+            <>
+                <Avatar src={firebase.auth().currentUser.photoURL}></Avatar>
+                <Button color="secondary" onClick={()=> firebase.auth().signOut()}>Sign Out</Button>
+            </>
           }
             
           </div>

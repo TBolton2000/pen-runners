@@ -46,7 +46,6 @@ class Signin extends Component{
                 <AppAppBar currentUser={firebase.auth().currentUser}/>
                 {this.state.isSignedIn ? 
                 <App currentUser={firebase.auth().currentUser} isSignedIn={this.state.isSignedIn}/>
-                
                 : 
                 <div>
                 <StyledFirebaseAuth 

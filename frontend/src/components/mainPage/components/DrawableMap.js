@@ -28,15 +28,9 @@ var deleteIcon = icon({
 
 class DrawableMap extends React.Component {
     constructor(props) {
-        super(props);
-        this.state = {
-            lat: 30.621830,
-            lng: -96.341600,
-            zoom: 20,
-            currentDrawing: [[30.6217,-96.3416],[30.6219,-96.3416],[30.6219,-96.3413]],
-            lastPoint: [30.6219,-96.3413]
-        };
+        super(props); 
         console.log(this);
+        this.lines = [];
     }
 
     addPoint (event) {
@@ -73,21 +67,26 @@ class DrawableMap extends React.Component {
 
     render() {
         return(
-            <Map center={[this.state.lat,this.state.lng]} zoom={this.state.zoom} onclick={(event)=>{
-                this.addPoint(event);
+            <Map center={[30.6217,-96.3416]} zoom={20} onclick={(event)=>{
+                this.props.drawing.addToSegment(this.props.drawing.selectedSegementIndex,[event.latlng.lat,event.latlng.lng]);
+                this.lines.forEach(element => {
+                    element && console.log(element.props.leaflet);
+                });
+                console.log(this);
             }}>
                 <TileLayer
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                 />
-                {this.state.lastPoint &&
-                <Marker position={this.state.lastPoint} onclick={(event)=>{
-                    this.undoPoint(event)
-                }} icon={undoIcon}>
+                {
+                <Marker position={this.props.drawing.returnLastPoint(this.props.drawing.selectedSegementIndex)} 
+                    onclick={(event)=>{this.props.drawing.undoFromSegment(this.props.drawing.selectedSegmentIndex)}} icon={undoIcon}>
                 </Marker>
                 }
-                {this.state.currentDrawing.length > 0 &&
-                <Polyline positions={this.state.currentDrawing} color="maroon" />
+                { this.props.drawing.segments.map( (value, index) => {
+                    console.log(index);
+                    return <Polyline positions={value.points} color={value.color} />
+                })
                 }
             </Map>
         )
