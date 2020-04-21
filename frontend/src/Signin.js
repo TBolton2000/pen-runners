@@ -21,9 +21,10 @@ firebase.initializeApp({
 class Signin extends Component{
     state = {isSignedIn : false}
     uiConfig = {
-        signInFlow: "redirect",
+        signInFlow: "popup",
         signInOptions: [
-            firebase.auth.GoogleAuthProvider.PROVIDER_ID 
+            firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+            firebase.auth.EmailAuthProvider.PROVIDER_ID  
         ],
         callbacks: {
             signInSuccess : () => false
@@ -48,10 +49,19 @@ class Signin extends Component{
                 <App currentUser={firebase.auth().currentUser} isSignedIn={this.state.isSignedIn}/>
                 : 
                 <div>
+                
                 <StyledFirebaseAuth 
                     uiConfig={this.uiConfig}
                     firebaseAuth={firebase.auth()}
                 />
+                <div style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center"
+                }} > 
+                <Button style={{background: "#28282a", color: "white"}}
+                onClick= {() => firebase.auth().signInAnonymously()}>Sign In Anonimously </Button>
+                </div>
                 </div>
                 }
             </div>
