@@ -1,4 +1,4 @@
-import firebase from "firebase";
+import firebase from "./firebase";
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth"
 import React , {Component} from 'react'
 import App from "./App"
@@ -6,17 +6,6 @@ import withRoot from './components/landingPage/withRoot';
 import AppAppBar from './components/landingPage/views/AppAppBar';
 import { Button } from "@material-ui/core";
 import Landing from "./Landing";
-
-firebase.initializeApp({
-    apiKey: "AIzaSyA5-nNPmrd2eTVK8YDvr3YBMWkh5X5ii2w",
-    authDomain: "pen-runners.firebaseapp.com",
-    databaseURL: "https://pen-runners.firebaseio.com",
-    projectId: "pen-runners",
-    storageBucket: "pen-runners.appspot.com",
-    messagingSenderId: "801197736082",
-    appId: "1:801197736082:web:dd8b0725b9e80a631a664b",
-    measurementId: "G-ZRWSWVMJ57"
-})
 
 class Signin extends Component{
     state = {isSignedIn : false}
@@ -32,9 +21,6 @@ class Signin extends Component{
     }
 
     componentDidMount = () => {
-
-        
-
         firebase.auth().onAuthStateChanged(user => {
             this.setState({isSignedIn:!!user})
         })
@@ -60,7 +46,7 @@ class Signin extends Component{
                     alignItems: "center"
                 }} > 
                 <Button style={{background: "#28282a", color: "white"}}
-                onClick= {() => firebase.auth().signInAnonymously()}>Sign In Anonimously </Button>
+                onClick= {() => firebase.auth().signInAnonymously()}>Sign In Anonymously </Button>
                 </div>
                 </div>
                 }

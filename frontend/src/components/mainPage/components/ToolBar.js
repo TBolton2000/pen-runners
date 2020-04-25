@@ -7,8 +7,13 @@ import ColorPicker from './ColorPicker';
 import IconButton from '@material-ui/core/IconButton'
 import UndoIcon from '@material-ui/icons/Undo';
 import AddIcon from '@material-ui/icons/Add';
+import SaveIcon from '@material-ui/icons/Save';
+import DeleteIcon from '@material-ui/icons/Delete';
+import EditorDialogBox from "./EditorDialogBox";
+import EditIcon from '@material-ui/icons/Edit';
 
-const ToolBar = ({state,drawHandler,segHandler,handleColorClick,handleColorClose,handleColorChange,handleUndo,handleNewSeg}) => {
+const ToolBar = ({state,drawHandler,segHandler,handleEdit,handleColorClick,handleColorClose,handleColorChange,handleUndo,handleNewSeg,
+                    handleSave, handleLoad, handleNewDrawing, handleSegDelete,handleDrawingDelete}) => {
     return (
         <List disablePadding dense>
             {
@@ -16,7 +21,11 @@ const ToolBar = ({state,drawHandler,segHandler,handleColorClick,handleColorClose
                     return(
                         <React.Fragment key={`drawing${idx}`}>
                             <ListItem button onClick={(event)=>drawHandler(idx)}>
-                                <ListItemText>{drawing.name}</ListItemText>
+                                <ListItemText primaryTypographyProps={idx === state.drawIndex ? {style:{fontWeight: 'bold'}}:{}}>{drawing.name}</ListItemText>
+                                <EditorDialogBox state={state} idx={idx} idx2={null} updateState={(idx,idx2,name,description)=>handleEdit(idx,idx2,name,description)}></EditorDialogBox>
+                                <IconButton onClick={()=>handleDrawingDelete(idx)}>
+                                    <DeleteIcon/>
+                                </IconButton>
                             </ListItem>
                             {(state.drawIndex === idx) ? 
                                 <div className="segment-item">
@@ -31,9 +40,13 @@ const ToolBar = ({state,drawHandler,segHandler,handleColorClick,handleColorClose
                                                                      handleClick={()=>handleColorClick(idx,idx2)} 
                                                                      handleClose={()=>handleColorClose(idx,idx2)} 
                                                                      handleChange={(color)=>handleColorChange(idx,idx2,color)} />
-                                                        <ListItemText>{segment.name}</ListItemText>
+                                                        <ListItemText primaryTypographyProps={idx2 === state.segmentIndex ? {style:{fontWeight: 'bold'}}:{}}>{segment.name}</ListItemText>
                                                         <IconButton onClick={()=>handleUndo(idx,idx2)}>
                                                             <UndoIcon/>
+                                                        </IconButton>
+                                                        <EditorDialogBox state={state} idx={idx} idx2={idx2} updateState={(idx,idx2,name,description)=>handleEdit(idx,idx2,name,description)}></EditorDialogBox>
+                                                        <IconButton onClick={()=>handleSegDelete(idx,idx2)}>
+                                                            <DeleteIcon/>
                                                         </IconButton>
                                                     </ListItem>
                                                 </React.Fragment>
@@ -54,8 +67,18 @@ const ToolBar = ({state,drawHandler,segHandler,handleColorClick,handleColorClose
                     )
                 })
             }
-            
-
+            <ListItem button onClick={()=>handleNewDrawing()}>
+                <AddIcon/>
+                <ListItemText>Add new drawing</ListItemText>
+            </ListItem>
+            <ListItem button onClick={(e)=>handleSave(e)}>
+                <SaveIcon />
+                <ListItemText>Save Drawings</ListItemText>
+            </ListItem>
+            <ListItem button onClick={(e)=>handleLoad(e)}>
+                <SaveIcon />
+                <ListItemText>Download Drawings</ListItemText>
+            </ListItem>
         </List>
     )
 }

@@ -80,46 +80,7 @@ import Landing from './Landing';
 
 // }
 
-function App() {
-    var drawing = {
-        name: "Drawing 1",
-        selectedSegementIndex: 0,
-        segments: [
-            {
-                name: "Line 1",
-                color: "maroon",
-                points: [[30.6217,-96.3416],[30.6219,-96.3416],[30.6219,-96.3413]]
-            },
-        ],
-        returnDrawing: function() {
-            return this.segments;
-        },
-        returnLastPoint: function(i) {
-            return this.segments[i].points[this.segments[i].points.length-1];
-        },
-        addToSegment: function(i,point) {
-            console.log("Adding to segment");
-            this.segments[i].points.push(point);
-            console.log(this.segments[i].points);
-        },
-        undoFromSegment: function(i) {
-            this.segments[i].points.pop();
-        },
-        addSegment: function(_name,_color,_points) {
-            this.segments.push({
-                name: _name,
-                color: _color,
-                points: []
-            });
-        },
-        removeSegment: function(i) {
-            this.segments.pop();
-        }
-    }
-
-
-    
-
+function App(props) {
     // [30.621830, -96.341600] Texas A&M
     return (
         <div>
@@ -128,7 +89,7 @@ function App() {
             :
             <div>
                 {/* <AppAppBar currentUser={firebase.auth().currentUser}/> <!-- THIS IS A DUPLICATE WHEN RENDERING FROM LOGIN -->*/}
-                <MainPage />
+                <MainPage currentUser={props.currentUser}/>
                 {/* <div className="menu" id="menu">
                     {/* <h1>Welcome to Pen-Runners, {firebase.auth().currentUser.displayName}</h1>
                     <img alt="profileImage" src={firebase.auth().currentUser.photoURL} width="250px"/>
