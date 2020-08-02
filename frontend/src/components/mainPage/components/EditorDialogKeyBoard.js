@@ -9,11 +9,11 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import EditIcon from '@material-ui/icons/Edit';
 
-export default function EditorDialogBox(props) {
-    const [open, setOpen] = React.useState(false);
-    const {idx, idx2, state, updateState} = props;
-    const [name, setName] = React.useState(state.drawings[idx].name);
-    const [desc, setDesc] = React.useState(state.drawings[idx].description)
+export default function EditorDialogKeyBoard(props) {
+    // const [open, setOpen] = React.useState(true);
+    const {idx, idx2, state, updateState, setOpen} = props;
+    const [name, setName] = React.useState(idx != null && state.drawings.length > 0 ? state.drawings[idx].name : "");
+    const [desc, setDesc] = React.useState(idx != null && state.drawings.length > 0 ? state.drawings[idx].description : "");
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -38,11 +38,7 @@ export default function EditorDialogBox(props) {
     }
 
     return (
-        <div>
-        <IconButton color="primary" onClick={handleClickOpen}>
-            <EditIcon />
-        </IconButton>
-        <Dialog open={open} onClose={handleClose} submit={(e)=>console.log(e)} aria-labelledby="form-dialog-title">
+        <Dialog open={state.open} onClose={handleClose} submit={(e)=>console.log(e)} aria-labelledby="form-dialog-title">
             <DialogTitle id="form-dialog-title">Edit {idx2 === null ? "Drawing Info" : "Segment Info"}</DialogTitle>
             <DialogContent>
                 <TextField
@@ -51,7 +47,12 @@ export default function EditorDialogBox(props) {
                     id="title"
                     label="Title"
                     type="text"
-                    defaultValue={idx2 === null ? state.drawings[idx].name : state.drawings[idx].segments[idx2].name}
+                    // defaultValue={idx != null ?
+                    //     idx2 === null ? 
+                    //     state.drawings[idx].name : 
+                    //     state.drawings[idx].segments[idx2].name :
+                    //     ""
+                    // }
                     onChange={updateNameTextField}
                     fullWidth
                 />
@@ -61,7 +62,12 @@ export default function EditorDialogBox(props) {
                     id="desc"
                     label={idx2 == null ? "Description" : "Color"}
                     type="text"
-                    defaultValue={idx2 === null ? state.drawings[idx].description : state.drawings[idx].segments[idx2].color}
+                    // defaultValue={ idx != null ?
+                    //     idx2 === null ? 
+                    //     state.drawings[idx].description : 
+                    //     state.drawings[idx].segments[idx2].color : 
+                    //     ""
+                    // }
                     onChange={updateDescTextField}
                     fullWidth
                 />
@@ -75,6 +81,5 @@ export default function EditorDialogBox(props) {
                 </Button>
             </DialogActions>
         </Dialog>
-        </div>
     );
 }
